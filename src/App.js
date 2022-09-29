@@ -86,13 +86,13 @@ const App = () =>{
                               {/*ADD TASK  */}
                               {editForm===false &&(
 
-                                <div>
+                               
                                   <Col lg={3} md={3} sm={12}>
                                     <Button variant="dark" className="w-100" onClick={() =>{addTask(inputTask)}}>
                                         ADD TASK
                                     </Button>
                                 </Col>
-                                </div>
+                                
 
                                 
                               )}
