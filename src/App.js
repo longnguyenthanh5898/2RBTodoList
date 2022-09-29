@@ -1,4 +1,4 @@
-
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css"
 import { v4 as uuidv4 } from 'uuid';
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 const App = () =>{
  
-
+  const [isEditing, setIsEditing] = React.useState(false)
   //get data LS
   const getDataFromLS = () =>{
     return localStorage.getItem('lists') ? JSON.parse(localStorage.getItem('lists')) : []
@@ -23,34 +23,56 @@ const App = () =>{
   // addTask
   const addTask = (task) =>{
     let data = getDataFromLS()
-    data = [...data, {id: uuidv4(), task: task, edit: false}]
+    data = [...data, {id: uuidv4(), task: task}]
     localStorage.setItem('lists', JSON.stringify(data))
-    setLists(data)   
+    setLists(data)
+    setInputTask('') 
   }
+  // edit task
+  const editTask = (task) =>{
+    let data = getDataFromLS()
+    if(isEditing) {
+      // handle edit todo
+    } else {
+      data = [...data, {id: uuidv4(), task: task}]
+    }
+    setLists(data) 
+    setEditForm(false)  
+  }
+  // handleEdit
+  const handleEdit = (id) =>{
+    
+    setEditForm(true)
+    let data = getDataFromLS()
+    // let [{id: id_task, task: task}] = data
+    // let idTask = id_task
+
+    setInputTask(data[id]?.task)
+    let id_task = data[id]?.id
+    let id_item = id
+    // data[id_item] = {id: id_task, task: 'AAAAAAAA'}
+    // console.log(data, InputGroup)
+    // localStorage.setItem('lists', JSON.stringify(data))
+    console.log(id_item, id_task, data[id]?.task)
+    
+
   
-
-
+    
+   
+  }
 
   const [lists, setLists] = useState(getDataFromLS())
-
   const [inputTask, setInputTask] = useState('')
-
-
   const inputRef = useRef()
-  // useEffect(() =>{
-  //     inputRef.current.focus()
-  // })
+  useEffect(() =>{
+      inputRef.current.focus()
+  })
 
 
   // edit form
   const [editForm, setEditForm]=useState(false);
+  console.log(inputTask)
   
-  // handleEdit
-  const handleEdit = (id) =>{
-    let data = getDataFromLS()
-    setInputTask(data[id]?.task)
-    //  setEditForm(true)
-  }
   return (
     <div className="App">
       <Container>
@@ -67,9 +89,7 @@ const App = () =>{
       
               <Row className="justify-content-center mb-5">
                 <Col sm={12} lg={8}>
-                  
-                        {/* ADD TASK */}
-                        {editForm === false &&(
+                       
                           <Row>
                               {/* Input */}
                               <Col lg={9} md={9} sm={12}>
@@ -84,26 +104,26 @@ const App = () =>{
                               </Col>
 
                               {/*ADD TASK  */}
-                              {editForm===false &&(
-
-                               
+                              {editForm===false &&(                  
                                   <Col lg={3} md={3} sm={12}>
                                     <Button variant="dark" className="w-100" onClick={() =>{addTask(inputTask)}}>
                                         ADD TASK
                                     </Button>
-                                </Col>
-                                
-
-                                
+                                </Col>                                               
                               )}
 
+                               {/* EDIT TASK */}
                               
-                      
-                              
-                             
+                               {editForm===true &&(                               
+                                          <Col lg={3} md={3} sm={12}>
+                                            <Button variant="dark" className="w-100" onClick={() =>{editTask(inputTask)}}>
+                                                EDIT
+                                            </Button>
+                                          </Col>             
+                                )}                            
                             </Row>
-                        )}
-                        {/* ADD TASK */}
+                     
+                       
 
 
                        
